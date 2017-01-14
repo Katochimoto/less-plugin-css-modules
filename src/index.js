@@ -1,16 +1,33 @@
 import yargs from 'yargs';
-import stringHash from 'string-hash';
 import genericNames from 'generic-names';
 import postcss from 'postcss';
 import PostcssModulesLocalByDefault from 'postcss-modules-local-by-default';
 import PostcssModulesScope from 'postcss-modules-scope';
+
+const OPTIONS = {
+  mode: {
+    describe: '',
+    example: 'lessc index.less --css-modules="--mode=global"',
+    choices: [ 'global', 'local', 'pure' ]
+  },
+  hashPrefix: {
+    describe: '',
+    example: 'lessc index.less --css-modules="--hashPrefix=project_name"',
+    type: 'string'
+  },
+  generateScopedName: {
+    describe: '',
+    example: 'lessc index.less --css-modules="--generateScopedName=[name]__[local]___[hash:base64:5]"',
+    type: 'string'
+  }
+};
 
 /**
  * @class CSSModules
  * @param {Object} [options]
  * @param {string} [options.mode]
  * @param {string} [options.hashPrefix]
- * @param {string|function} [options.generateScopedName]
+ * @param {string|function} [options.generateScopedName='[name]__[local]___[hash:base64:5]']
  */
 function CSSModules (options = {}) {
   this.options = options;
@@ -29,12 +46,11 @@ CSSModules.prototype.printUsage = function () {
   console.log('');
 };
 
+/**
+ * @param {string} options
+ */
 CSSModules.prototype.setOptions = function (options) {
-  this.options = yargs.option('mode', {
-    describe: '',
-    example: 'lessc index.less --css-modules="--mode=global"',
-    choices: [ 'global', 'local', 'pure' ]
-  }).parse(options);
+  this.options = yargs.options(OPTIONS).parse(options);
 };
 
 export default CSSModules;
@@ -50,6 +66,11 @@ function CSSProcessor (options = {}) {
   this.options = options;
 }
 
+/**
+ * [process description]
+ * @param {string} css
+ * @returns {string}
+ */
 CSSProcessor.prototype.process = function (css) {
   const processor = postcss();
 
@@ -59,20 +80,16 @@ CSSProcessor.prototype.process = function (css) {
     }));
   }
 
+  const typeGenerateScopedName = typeof this.options.generateScopedName;
+  const pattern = typeGenerateScopedName === 'string' ? this.options.generateScopedName : '[name]__[local]___[hash:base64:5]';
   const scopedName = do {
-    if (this.options.generateScopedName) {
-      if (typeof this.options.generateScopedName === 'function') {
-        this.options.generateScopedName;
-
-      } else {
-        genericNames(this.options.generateScopedName, {
-          context: process.cwd(),
-          hashPrefix: this.options.hashPrefix
-        });
-      }
-
+    if (typeGenerateScopedName === 'function') {
+      this.options.generateScopedName;
     } else {
-      generateScopedName;
+      genericNames(pattern, {
+        context: process.cwd(),
+        hashPrefix: this.options.hashPrefix
+      });
     }
   };
 
@@ -83,11 +100,3 @@ CSSProcessor.prototype.process = function (css) {
   const result = processor.process(css);
   return result.toString();
 };
-
-function generateScopedName (name, filename, css) {
-  const i = css.indexOf(`.${name}`);
-  const lineNumber = css.substr(0, i).split(/[\r\n]/).length;
-  const hash = stringHash(css).toString(36).substr(0, 5);
-
-  return `_${name}_${hash}_${lineNumber}`;
-}

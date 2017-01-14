@@ -1,6 +1,6 @@
 {
   "name": "less-plugin-css-modules",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A less plugin for css modules",
   "main": "less-plugin-css-modules.js",
   "scripts": {
@@ -33,7 +33,6 @@
     "postcss": "5.2.10",
     "postcss-modules-local-by-default": "1.1.1",
     "postcss-modules-scope": "1.0.2",
-    "string-hash": "1.1.1",
     "yargs": "6.6.0"
   },
   "devDependencies": {
