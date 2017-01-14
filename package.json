@@ -1,0 +1,47 @@
+{
+  "name": "less-plugin-css-modules",
+  "version": "0.0.1",
+  "description": "A less plugin for css modules",
+  "main": "less-plugin-css-modules.js",
+  "scripts": {
+    "dev": "babel src/index.js -w -o less-plugin-css-modules.js",
+    "build": "babel src/index.js -o less-plugin-css-modules.js"
+  },
+  "keywords": [
+    "less",
+    "plugin",
+    "css",
+    "modules",
+    "icss"
+  ],
+  "author": {
+    "name": "Rikishi",
+    "email": "rikishi@protonmail.ch",
+    "url": "https://github.com/Katochimoto"
+  },
+  "bugs": {
+    "url": "https://github.com/Katochimoto/less-plugin-css-modules/issues",
+    "email": "rikishi@protonmail.ch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Katochimoto/less-plugin-css-modules"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "generic-names": "1.0.2",
+    "postcss": "5.2.10",
+    "postcss-modules-local-by-default": "1.1.1",
+    "postcss-modules-scope": "1.0.2",
+    "string-hash": "1.1.1",
+    "yargs": "6.6.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-do-expressions": "^6.8.0",
+    "babel-plugin-transform-es2015-block-scoping": "^6.21.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-es2015-parameters": "^6.21.0",
+    "babel-plugin-transform-es2015-template-literals": "^6.8.0"
+  }
+}
