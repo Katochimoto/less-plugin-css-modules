@@ -1,6 +1,6 @@
 {
   "name": "less-plugin-css-modules",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A less plugin for css modules",
   "main": "less-plugin-css-modules.js",
   "scripts": {
